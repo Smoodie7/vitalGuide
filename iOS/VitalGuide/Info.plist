@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key></key>
+	<string></string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Sora-SemiBold.ttf</string>
+	</array>
+	<key> NSHealthRequiredReadAuthorizationTypeIdentifiers</key>
+	<string></string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>This app needs write access to track and record heart rate data for health monitoring purposes.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>This app needs write access to track and record heart rate data for health monitoring purposes.</string>
+</dict>
+</plist>
