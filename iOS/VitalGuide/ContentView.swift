@@ -7,56 +7,72 @@
 import Foundation
 import SwiftUI
 
+// The ContentView of your app, which is the main view.
 struct ContentView: View {
-    @ObservedObject var healthDataAuthorizationStatus: HealthDataAuthorizationStatus
-
-    @Environment(\.colorScheme) var colorScheme
-    @State var selectedTab = "house.fill"
-    @State var showWelcomeScreen = true
-    @State var temp = true
+    // HealthDataAuthorizationStatus Environment Object
+    @EnvironmentObject var healthDataAuthorizationStatus: HealthDataAuthorizationStatus
     
+    // Color scheme environment variable
+    @Environment(\.colorScheme) var colorScheme
+    
+    // Variable to control showing of the welcome screen
+    @State var showWelcomeScreen = true
+
+    // Computed variable to get the background color based on the color scheme
     private var backgroundColor: Color {
         colorScheme == .dark ? .black : Color(red: 0.953, green: 0.953, blue: 0.953)
     }
     
+    // Computed variable to get the tab bar color based on the color scheme
     private var tabBarColor: Color {
         colorScheme == .dark ? Color(red: 25/255, green: 25/255, blue: 25/255) : .white
     }
     
     var body: some View {
         ZStack {
-            backgroundColor
-                .edgesIgnoringSafeArea(.all)
+            backgroundColor.edgesIgnoringSafeArea(.all)
             
             VStack {
                 // Top empty bar to avoid clipping with iOS elements
                 if hasNotch {
-                    backgroundColor
-                        .frame(height: 52)
+                    backgroundColor.frame(height: 52)
                 }
                 
-                switch selectedTab {
-                case "house.fill":
+                // TabView handles showing of different tabs
+                TabView {
+                    // Home tab
                     HomeView()
-                case "message.fill":
-                    HomeView()
-                case "person.fill":
+                        .tabItem {
+                            Image(systemName: "house.fill")
+                            Text("Home")
+                        }
+                    
+                    // Message tab
+                    Text("Message View") // Replace this with your own MessageView
+                        .tabItem {
+                            Image(systemName: "message.fill")
+                            Text("Messages")
+                        }
+                    
+                    // Settings tab
                     SettingsView()
-                case "gearshape.fill":
-                    SettingsView()
-                default:
-                    Text("Selection does not match any tab.")
+                        .tabItem {
+                            Image(systemName: "person.fill")
+                            Text("Settings")
+                        }
                 }
+                .accentColor(Color(#colorLiteral(red: 1, green: 0.4157, blue: 0.4314, alpha: 0.8)))
                 
-                Spacer() // Content of your View goes here
-                
-                TabBar(selectedTab: $selectedTab, tabBarColor: tabBarColor)
+                // Pushes the TabView to the top
+                Spacer()
             }
+            // Show welcome screen if needed
             .sheet(isPresented: $showWelcomeScreen, content: WelcomeView.init)
         }
         .ignoresSafeArea(.all, edges: .top)
     }
     
+    // Check if the device has a notch
     private var hasNotch: Bool {
         let bottom = UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0
         return bottom > 0
@@ -213,11 +229,11 @@ struct WelcomeView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ContentView(healthDataAuthorizationStatus: HealthDataAuthorizationStatus.preview)
+            ContentView()
                 .preferredColorScheme(.light)
                 .previewDisplayName("Light Mode")
             
-            ContentView(healthDataAuthorizationStatus: HealthDataAuthorizationStatus.preview)
+            ContentView()
                 .preferredColorScheme(.dark)
                 .previewDisplayName("Dark Mode")
         }
